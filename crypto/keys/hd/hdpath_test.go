@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/cosmos/cosmos-sdk/types"
 	bip39 "github.com/cosmos/go-bip39"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -29,10 +30,10 @@ func ExampleStringifyPathParams() {
 }
 
 func TestStringifyFundraiserPathParams(t *testing.T) {
-	path := NewFundraiserParams(4, 22)
+	path := NewFundraiserParams(4, 118, 22)
 	require.Equal(t, "44'/118'/4'/0/22", path.String())
 
-	path = NewFundraiserParams(4, 57)
+	path = NewFundraiserParams(4, 118, 57)
 	require.Equal(t, "44'/118'/4'/0/57", path.String())
 }
 
@@ -105,7 +106,7 @@ func ExampleSomeBIP32TestVecs() {
 	fmt.Println("keys from fundraiser test-vector (cosmos, bitcoin, ether)")
 	fmt.Println()
 	// cosmos
-	priv, err := DerivePrivateKeyForPath(master, ch, FullFundraiserPath)
+	priv, err := DerivePrivateKeyForPath(master, ch, types.FullFundraiserPath)
 	if err != nil {
 		fmt.Println("INVALID")
 	} else {
