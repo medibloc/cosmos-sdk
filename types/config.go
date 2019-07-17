@@ -10,6 +10,8 @@ type Config struct {
 	mtx                 sync.RWMutex
 	sealed              bool
 	bech32AddressPrefix map[string]string
+	coinType            uint32
+	fullFundraiserPath  string
 	txEncoder           TxEncoder
 }
 
@@ -25,7 +27,9 @@ var (
 			"validator_pub":  Bech32PrefixValPub,
 			"consensus_pub":  Bech32PrefixConsPub,
 		},
-		txEncoder: nil,
+		coinType:           CoinType,
+		fullFundraiserPath: FullFundraiserPath,
+		txEncoder:          nil,
 	}
 )
 
@@ -73,6 +77,18 @@ func (config *Config) SetTxEncoder(encoder TxEncoder) {
 	config.txEncoder = encoder
 }
 
+// Set the BIP-0044 CoinType code on the config
+func (config *Config) SetCoinType(coinType uint32) {
+	config.assertNotSealed()
+	config.coinType = coinType
+}
+
+// Set the FullFundraiserPath (BIP44Prefix) on the config
+func (config *Config) SetFullFundraiserPath(fullFundraiserPath string) {
+	config.assertNotSealed()
+	config.fullFundraiserPath = fullFundraiserPath
+}
+
 // Seal seals the config such that the config state could not be modified further
 func (config *Config) Seal() *Config {
 	config.mtx.Lock()
@@ -115,4 +131,14 @@ func (config *Config) GetBech32ConsensusPubPrefix() string {
 // GetTxEncoder return function to encode transactions
 func (config *Config) GetTxEncoder() TxEncoder {
 	return config.txEncoder
+}
+
+// Get the BIP-0044 CoinType code on the config
+func (config *Config) GetCoinType() uint32 {
+	return config.coinType
+}
+
+// Get the FullFundraiserPath (BIP44Prefix) on the config
+func (config *Config) GetFullFundraiserPath() string {
+	return config.fullFundraiserPath
 }
