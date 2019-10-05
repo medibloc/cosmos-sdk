@@ -146,7 +146,8 @@ func (msg MsgCreateValidator) ValidateBasic() sdk.Error {
 		return ErrSelfDelegationBelowMinimum(DefaultCodespace)
 	}
 
-	return nil
+	//return nil
+	return ErrNotAllowed(DefaultCodespace)
 }
 
 // MsgEditValidator - struct for editing a validator
