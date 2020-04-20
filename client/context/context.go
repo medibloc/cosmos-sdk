@@ -105,10 +105,10 @@ func NewCLIContext() CLIContext {
 }
 
 func createVerifier() tmlite.Verifier {
-	trustNodeDefined := viper.IsSet(client.FlagTrustNode)
-	if !trustNodeDefined {
-		return nil
-	}
+	//	trustNodeDefined := viper.IsSet(client.FlagTrustNode)
+	//	if !trustNodeDefined {
+	//		return nil
+	//	}
 
 	trustNode := viper.GetBool(client.FlagTrustNode)
 	if trustNode {
