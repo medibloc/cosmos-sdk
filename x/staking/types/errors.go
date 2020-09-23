@@ -212,3 +212,7 @@ func ErrNeitherShareMsgsGiven(codespace sdk.CodespaceType) sdk.Error {
 func ErrMissingSignature(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeInvalidValidator, "missing signature")
 }
+
+func ErrNotAllowed(codespace sdk.CodespaceType) sdk.Error {
+	return sdk.NewError(codespace, CodeUnauthorized, "not allowed")
+}
