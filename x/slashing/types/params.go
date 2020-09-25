@@ -11,15 +11,15 @@ import (
 // Default parameter namespace
 const (
 	DefaultParamspace           = ModuleName
-	DefaultMaxEvidenceAge       = 60 * 2 * time.Second
-	DefaultSignedBlocksWindow   = int64(100)
+	DefaultMaxEvidenceAge       = 60 * 60 * 24 * 7 * 3 * time.Second // 3 weeks as same as unbonding period
+	DefaultSignedBlocksWindow   = int64(10000)
 	DefaultDowntimeJailDuration = 60 * 10 * time.Second
 )
 
 // The Double Sign Jail period ends at Max Time supported by Amino (Dec 31, 9999 - 23:59:59 GMT)
 var (
 	DoubleSignJailEndTime          = time.Unix(253402300799, 0)
-	DefaultMinSignedPerWindow      = sdk.NewDecWithPrec(5, 1)
+	DefaultMinSignedPerWindow      = sdk.NewDecWithPrec(5, 2)
 	DefaultSlashFractionDoubleSign = sdk.NewDec(1).Quo(sdk.NewDec(20))
 	DefaultSlashFractionDowntime   = sdk.NewDec(1).Quo(sdk.NewDec(100))
 )

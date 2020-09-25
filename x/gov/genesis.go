@@ -11,7 +11,7 @@ import (
 
 const (
 	// Default period for deposits & voting
-	DefaultPeriod time.Duration = 86400 * 2 * time.Second // 2 days
+	DefaultPeriod time.Duration = 60 * 60 * 24 * 14 * time.Second // 14 days
 )
 
 // GenesisState - all staking state that must be provided at genesis
