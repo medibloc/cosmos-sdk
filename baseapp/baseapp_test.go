@@ -284,6 +284,11 @@ func TestSetMinGasPrices(t *testing.T) {
 	require.Equal(t, minGasPrices, app.minGasPrices)
 }
 
+func TestSetDisallowValidatorCreation(t *testing.T) {
+	app := newBaseApp(t.Name(), SetDisallowValidatorCreation(true))
+	require.True(t, app.disallowValidatorCreation)
+}
+
 func TestInitChainer(t *testing.T) {
 	name := t.Name()
 	// keep the db and logger ourselves so

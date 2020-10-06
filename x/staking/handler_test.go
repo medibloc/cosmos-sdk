@@ -1324,3 +1324,16 @@ func TestInvalidCoinDenom(t *testing.T) {
 	got = handleMsgBeginRedelegate(ctx, msgRedelegate, keeper)
 	require.True(t, got.IsOK())
 }
+
+func TestDisallowValidatorCreation(t *testing.T) {
+	initPower := int64(1000000)
+	initBond := sdk.TokensFromConsensusPower(initPower)
+	ctx, _, keeper, _ := keep.CreateTestInput(t, false, initPower)
+
+	ctx = ctx.WithDisallowValidatorCreation(true)
+
+	msg := NewTestMsgCreateValidator(sdk.ValAddress(keep.Addrs[0]), keep.PKs[0], initBond)
+	got := handleMsgCreateValidator(ctx, msg, keeper)
+	require.False(t, got.IsOK())
+	require.Equal(t, CodeUnauthorized, got.Code)
+}

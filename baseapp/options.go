@@ -38,6 +38,11 @@ func SetHaltTime(haltTime uint64) func(*BaseApp) {
 	return func(bap *BaseApp) { bap.setHaltTime(haltTime) }
 }
 
+// SetDisallowValidatorCreation returns a BaseApp option function that makes the validator creation disallowed.
+func SetDisallowValidatorCreation(disallow bool) func(*BaseApp) {
+	return func(bap *BaseApp) { bap.setDisallowValidatorCreation(disallow) }
+}
+
 func (app *BaseApp) SetName(name string) {
 	if app.sealed {
 		panic("SetName() on sealed BaseApp")
