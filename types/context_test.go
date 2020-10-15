@@ -111,6 +111,7 @@ func TestContextWithCustom(t *testing.T) {
 	voteinfos := []abci.VoteInfo{{}}
 	meter := types.NewGasMeter(10000)
 	minGasPrices := types.DecCoins{types.NewInt64DecCoin("feetoken", 1)}
+	disallowValidatorCreation := true
 
 	ctx = types.NewContext(nil, header, ischeck, logger)
 	require.Equal(t, header, ctx.BlockHeader())
@@ -121,7 +122,8 @@ func TestContextWithCustom(t *testing.T) {
 		WithTxBytes(txbytes).
 		WithVoteInfos(voteinfos).
 		WithGasMeter(meter).
-		WithMinGasPrices(minGasPrices)
+		WithMinGasPrices(minGasPrices).
+		WithDisallowValidatorCreation(disallowValidatorCreation)
 	require.Equal(t, height, ctx.BlockHeight())
 	require.Equal(t, chainid, ctx.ChainID())
 	require.Equal(t, ischeck, ctx.IsCheckTx())
@@ -130,6 +132,7 @@ func TestContextWithCustom(t *testing.T) {
 	require.Equal(t, voteinfos, ctx.VoteInfos())
 	require.Equal(t, meter, ctx.GasMeter())
 	require.Equal(t, minGasPrices, ctx.MinGasPrices())
+	require.Equal(t, disallowValidatorCreation, ctx.ValidatorCreationDisallowed())
 }
 
 // Testing saving/loading of header fields to/from the context

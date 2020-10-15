@@ -30,6 +30,9 @@ type BaseConfig struct {
 	//
 	// Note: Commitment of state will be attempted on the corresponding block.
 	HaltTime uint64 `mapstructure:"halt-time"`
+
+	// DisallowValidatorCreation is a flag for disallowing the validator creation.
+	DisallowValidatorCreation bool `mapstructure:"disallow-validator-creation"`
 }
 
 // Config defines the server's top level configuration
@@ -68,7 +71,8 @@ func (c *Config) GetMinGasPrices() sdk.DecCoins {
 func DefaultConfig() *Config {
 	return &Config{
 		BaseConfig{
-			MinGasPrices: defaultMinGasPrices,
+			MinGasPrices:              defaultMinGasPrices,
+			DisallowValidatorCreation: false,
 		},
 	}
 }

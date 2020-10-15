@@ -105,6 +105,10 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {
 // now we just perform action and save
 
 func handleMsgCreateValidator(ctx sdk.Context, msg types.MsgCreateValidator, k keeper.Keeper) sdk.Result {
+	if ctx.BlockHeight() > 0 && ctx.ValidatorCreationDisallowed() {
+		return types.ErrNotAllowed(DefaultCodespace).Result()
+	}
+
 	// check to see if the pubkey or sender has been registered before
 	if _, found := k.GetValidator(ctx, msg.ValidatorAddress); found {
 		return ErrValidatorOwnerExists(k.Codespace()).Result()

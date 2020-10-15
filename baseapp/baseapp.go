@@ -90,6 +90,9 @@ type BaseApp struct {
 	// minimum block time (in Unix seconds) at which to halt the chain and gracefully shutdown
 	haltTime uint64
 
+	// flag for disallowing the validator creation
+	disallowValidatorCreation bool
+
 	// application's version string
 	appVersion string
 }
@@ -276,6 +279,10 @@ func (app *BaseApp) setHaltTime(haltTime uint64) {
 	app.haltTime = haltTime
 }
 
+func (app *BaseApp) setDisallowValidatorCreation(disallow bool) {
+	app.disallowValidatorCreation = disallow
+}
+
 // Router returns the router of the BaseApp.
 func (app *BaseApp) Router() sdk.Router {
 	if app.sealed {
@@ -301,8 +308,10 @@ func (app *BaseApp) IsSealed() bool { return app.sealed }
 func (app *BaseApp) setCheckState(header abci.Header) {
 	ms := app.cms.CacheMultiStore()
 	app.checkState = &state{
-		ms:  ms,
-		ctx: sdk.NewContext(ms, header, true, app.logger).WithMinGasPrices(app.minGasPrices),
+		ms: ms,
+		ctx: sdk.NewContext(ms, header, true, app.logger).
+			WithMinGasPrices(app.minGasPrices).
+			WithDisallowValidatorCreation(app.disallowValidatorCreation),
 	}
 }
 
@@ -314,7 +323,8 @@ func (app *BaseApp) setDeliverState(header abci.Header) {
 	ms := app.cms.CacheMultiStore()
 	app.deliverState = &state{
 		ms:  ms,
-		ctx: sdk.NewContext(ms, header, false, app.logger),
+		ctx: sdk.NewContext(ms, header, false, app.logger).
+			WithDisallowValidatorCreation(app.disallowValidatorCreation),
 	}
 }
 
@@ -600,7 +610,7 @@ func handleQueryCustom(app *BaseApp, path []string, req abci.RequestQuery) (res 
 	// cache wrap the commit-multistore for safety
 	ctx := sdk.NewContext(
 		cacheMS, app.checkState.ctx.BlockHeader(), true, app.logger,
-	).WithMinGasPrices(app.minGasPrices)
+	).WithMinGasPrices(app.minGasPrices).WithDisallowValidatorCreation(app.disallowValidatorCreation)
 
 	// Passes the rest of the path as an argument to the querier.
 	//

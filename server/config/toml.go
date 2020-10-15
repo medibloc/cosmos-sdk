@@ -30,6 +30,9 @@ halt-height = {{ .BaseConfig.HaltHeight }}
 #
 # Note: Commitment of state will be attempted on the corresponding block.
 halt-time = {{ .BaseConfig.HaltTime }}
+
+# DisallowValidatorCreation is a flag for disallowing the validator creation.
+disallow-validator-creation = {{ .BaseConfig.DisallowValidatorCreation }}
 `
 
 var configTemplate *template.Template
