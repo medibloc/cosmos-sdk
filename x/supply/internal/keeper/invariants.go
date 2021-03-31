@@ -35,6 +35,6 @@ func TotalSupply(k Keeper) sdk.Invariant {
 		//		"\tsum of accounts coins: %v\n"+
 		//			"\tsupply.Total:          %v\n",
 		//		expectedTotal, supply.GetTotal())), broken
-		return sdk.FormatInvariant(types.ModuleName, "total supply", "Success"), true
+		return sdk.FormatInvariant(types.ModuleName, "total supply", "Success"), false
 	}
 }
