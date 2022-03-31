@@ -156,13 +156,19 @@ func (k Keeper) MustUpdateValidatorCommission(ctx sdk.Context,
 	commission := validator.Commission
 	blockTime := ctx.BlockHeader().Time
 
-	if newRate.LT(k.MinCommissionRate(ctx)) {
+	// validate newRate
+	switch {
+	case newRate.IsNegative():
+		return commission, types.ErrCommissionChangeRateNegative
+	case newRate.GT(sdk.OneDec()):
+		return commission, fmt.Errorf("cannot set validator commission to larger than 100%%")
+	case newRate.LT(k.MinCommissionRate(ctx)):
 		return commission, fmt.Errorf("cannot set validator commission to less than minimum rate of %s", k.MinCommissionRate(ctx))
 	}
 
 	commission.Rate = newRate
-	if commission.MaxRate.LT(newRate) {
-		commission.MaxRate = newRate.MulInt64(2)
+	if commission.MaxRate.LT(newRate) { // if new-rate > max-rate, then max-rate *= 2
+		commission.MaxRate = sdk.MinDec(newRate.MulInt64(2), sdk.OneDec())
 	}
 	commission.UpdateTime = blockTime
 
