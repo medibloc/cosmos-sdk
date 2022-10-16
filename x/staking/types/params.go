@@ -42,10 +42,8 @@ var (
 	KeyMinCommissionRate = []byte("MinCommissionRate")
 )
 
-var (
-	// DefaultMinCommissionRate is set to 0%
-	DefaultMinCommissionRate = sdk.ZeroDec()
-)
+// DefaultMinCommissionRate is set to 0%
+var DefaultMinCommissionRate = sdk.ZeroDec()
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
