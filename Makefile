@@ -396,7 +396,7 @@ proto-lint:
 	@$(DOCKER_BUF) lint --error-format=json
 
 proto-check-breaking:
-	@$(DOCKER_BUF) breaking --against $(HTTPS_GIT)#branch=v0.45.9-panacea
+	@$(DOCKER_BUF) breaking --against $(HTTPS_GIT)#branch=v0.45.12-panacea
 
 
 TM_URL              = https://raw.githubusercontent.com/tendermint/tendermint/v0.34.22/proto/tendermint
